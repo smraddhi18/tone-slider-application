@@ -162,10 +162,7 @@ Backend
 
 📹 Deliverables
 
-    ✅ Video Demo: [Insert link here]
-
-    ✅ GitHub Repo: [Insert link here]
-
+    ✅ Video Demo: https://drive.google.com/file/d/166cyJ1iZKaDZ5-37udv7HmPEktq_JhAw/view?usp=sharing
     ✅ This README
 
 📝 Notes
