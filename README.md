@@ -160,10 +160,9 @@ Backend
 
     Friendly error displays for API and validation issues.
 
-📹 Deliverables
+📹 Deliverables ✅ Video Demo: 
 
-    ✅ Video Demo: [Watch here] (https://drive.google.com/file/d/166cyJ1iZKaDZ5-37udv7HmPEktq_JhAw/view?usp=sharing)
-    ✅ This README
+     https://drive.google.com/file/d/166cyJ1iZKaDZ5-37udv7HmPEktq_JhAw/view?usp=sharing
 
 📝 Notes
 Trade-offs
