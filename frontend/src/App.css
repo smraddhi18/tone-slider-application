@@ -1,0 +1,308 @@
+/* General Body Styles & Font */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  background-color: #f4f7f9; /* Light grey background */
+  color: #333;
+  margin: 0;
+  padding: 1rem; /* Slightly less padding for more screen real estate */
+  line-height: 1.6;
+  display: flex; /* Use flexbox for centering */
+  flex-direction: column; /* Stack h1 and app-container */
+  align-items: center; /* Center horizontally */
+  min-height: 100vh; /* Ensure body takes full viewport height */
+}
+
+/* Global box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* App Title */
+h1 {
+  text-align: center;
+  color: #2c3e50; /* Darker blue-grey */
+  margin-bottom: 1rem; /* Reduced margin */
+  font-weight: 600;
+  width: 100%; /* Ensure it takes width before container limits it */
+  max-width: 1100px; /* Match max-width of container */
+  flex-shrink: 0; /* Prevent title from shrinking */
+}
+
+/* Main App Container - Card Style */
+.app-container {
+  background-color: #ffffff; /* White background for the card */
+  border-radius: 12px; /* Softer corners */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+  padding: 1.5rem; /* Adjust padding */
+  display: flex;
+  gap: 1.5rem; /* Space between editor and controls */
+  max-width: 1100px; /* Wider max width */
+  width: 100%; /* Responsive width */
+  /* --- KEY CHANGE: Make container take most of the vertical space --- */
+  flex-grow: 1; /* Allow container to grow vertically within body */
+  min-height: 0; /* Allow shrinking if needed - flexbox thing */
+  /* Optionally set a min-height based on viewport, e.g.: */
+  /* min-height: calc(100vh - 100px); /* Subtract rough height of header/padding */
+}
+
+/* Editor Container */
+.editor-container {
+  flex: 3; /* Take even more horizontal space relative to controls */
+  display: flex; /* --- KEY CHANGE: Use flexbox for textarea sizing --- */
+  flex-direction: column; /* Stack elements vertically inside */
+  min-width: 0; /* Prevent flex item overflow issues */
+  min-height: 0; /* Allow shrinking if needed */
+}
+
+/* Textarea Styling */
+.editor-container textarea {
+  width: 100%;
+  /* --- KEY CHANGE: Make textarea grow vertically --- */
+  flex-grow: 1; /* Allow textarea to take available vertical space */
+  min-height: 200px; /* Set a reasonable minimum height */
+  /* Remove fixed height if previously set */
+
+  padding: 1rem;
+  border: 1px solid #d1d9e0; /* Lighter border */
+  border-radius: 8px;
+  font-size: 1rem; /* Standard readable size */
+  font-family: inherit; /* Use body font */
+  line-height: 1.5;
+  resize: vertical; /* Allow vertical resizing only */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.editor-container textarea:focus {
+  outline: none;
+  border-color: #007bff; /* Highlight border on focus */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); /* Soft glow on focus */
+}
+
+.editor-container textarea:disabled {
+  background-color: #e9ecef; /* Indicate disabled state */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Controls Container */
+.controls-container {
+  flex: 1; /* Take less space than editor */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between control elements */
+  min-width: 200px; /* Adjust minimum width slightly */
+  /* --- Optional: Align controls to the top --- */
+  align-self: flex-start;
+}
+
+/* Slider Label */
+.slider-label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.5rem; /* Space between label and slider */
+  display: block; /* Ensure it takes full width */
+  text-align: center; /* Center the label text */
+}
+
+/* Tone Slider - Basic Styling */
+.tone-slider {
+  width: 100%;
+  cursor: pointer;
+  height: 8px; /* Slider track height */
+  background: #e0e0e0; /* Track background */
+  border-radius: 5px;
+  outline: none;
+  appearance: none; /* Override default look */
+  -webkit-appearance: none; /* Override default look for Safari/Chrome */
+}
+
+/* Tone Slider - Thumb (the draggable part) */
+.tone-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px; /* Thumb width */
+  height: 20px; /* Thumb height */
+  background: #007bff; /* Primary blue color */
+  border-radius: 50%; /* Make it circular */
+  cursor: pointer;
+  margin-top: -6px; /* Adjust vertical position relative to track */
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.2s ease;
+}
+
+.tone-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border-radius: 50%;
+  border: none; /* Remove default border */
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.2s ease;
+}
+
+/* Change thumb color on hover/active */
+.tone-slider:hover::-webkit-slider-thumb {
+  background: #0056b3;
+}
+.tone-slider:hover::-moz-range-thumb {
+  background: #0056b3;
+}
+
+.tone-slider:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.tone-slider:disabled::-webkit-slider-thumb {
+  background: #adb5bd;
+  box-shadow: none;
+}
+.tone-slider:disabled::-moz-range-thumb {
+  background: #adb5bd;
+  box-shadow: none;
+}
+
+/* Button Group (for Undo/Redo) */
+.button-group {
+  display: flex;
+  gap: 0.75rem; /* Space between Undo/Redo buttons */
+  justify-content: space-between; /* Spread them out */
+}
+
+.button-group button {
+  flex-grow: 1; /* Make buttons share space equally */
+}
+
+/* General Button Styling */
+button {
+  padding: 0.75rem 1rem; /* Comfortable padding */
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px; /* Slightly rounded corners */
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  text-align: center;
+  background-color: #6c757d; /* Neutral grey for default/reset */
+  color: white;
+}
+
+/* Primary Button Style (e.g., could be used for a main action if needed) */
+button.primary {
+  background-color: #007bff;
+  color: white;
+}
+button.primary:hover {
+  background-color: #0056b3;
+}
+
+/* General Button Hover/Active States */
+button:not(:disabled):hover {
+  background-color: #5a6268; /* Darken grey on hover */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:not(:disabled):active {
+  transform: translateY(1px); /* Slight press down effect */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled Button State */
+button:disabled {
+  background-color: #ced4da; /* Lighter grey when disabled */
+  color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  text-align: center;
+  font-style: italic;
+  color: #6c757d; /* Grey color */
+  min-height: 1.5em; /* Reserve space to prevent layout jump */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Error Message */
+.error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Red border */
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
+  min-height: 1.5em; /* Consistent height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  body {
+    padding: 0.5rem; /* Even less padding on mobile */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Smaller title */
+    margin-bottom: 0.75rem;
+  }
+
+  .app-container {
+    flex-direction: column; /* Stack editor and controls vertically */
+    padding: 1rem;
+    gap: 1rem;
+    min-height: unset; /* Let content determine height on mobile */
+    height: calc(100vh - 60px); /* Try to fill screen minus header */
+  }
+
+  .editor-container {
+     /* --- KEY CHANGE for Mobile --- */
+    flex-grow: 1; /* Make editor container take most space when stacked */
+    flex-basis: 60%; /* Suggest it takes ~60% initially */
+    min-height: 250px; /* Ensure minimum usable height */
+  }
+
+  /* Textarea still uses flex-grow: 1 from base styles to fill editor-container */
+   .editor-container textarea {
+       min-height: 150px; /* Reduce minimum height further if needed */
+   }
+
+  .controls-container {
+    min-width: unset; /* Remove min-width */
+    width: 100%;
+    align-self: stretch; /* Let controls take full width */
+    flex-shrink: 0; /* Prevent controls from shrinking too much */
+  }
+}
+
+@media (max-width: 480px) {
+   h1 {
+    font-size: 1.3rem;
+   }
+
+   .app-container {
+     padding: 0.75rem;
+     gap: 0.75rem;
+     height: calc(100vh - 50px); /* Adjust for smaller header */
+   }
+
+   button {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+   }
+
+   .editor-container {
+       min-height: 200px; /* Adjust mobile min height */
+   }
+   .editor-container textarea {
+       font-size: 0.95rem; /* Slightly smaller font on small devices */
+   }
+}
