@@ -14,7 +14,7 @@ A web application that allows users to adjust the tone of their text using a sli
 
 ## 🏗️ Technologies Used
 
-- **Frontend**: React, Redux Toolkit, Tailwind CSS, custom CSS, Axios, lodash.debounce
+- **Frontend**: React, Redux Toolkit, custom CSS, Axios, lodash.debounce
 - **Backend**: Node.js, Express, @mistralai/mistralai, node-cache, express-rate-limit, cors, helmet, morgan, dotenv
 
 ## 🚀 Setup Instructions
@@ -176,13 +176,5 @@ Trade-offs
 Potential Improvements
 
     Persist Redux state with redux-persist.
-
     Expand tone presets beyond just a linear slider.
-
-    Remove unused hook files.
-
-    Increase Tailwind usage for more utility-first styling.
-
-    Add backend tests.
-
     Use Redis for persistent caching in production.
