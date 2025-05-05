@@ -1,4 +1,3 @@
-
 # Tone Slider Text Tool
 
 A web application that allows users to adjust the tone of their text using a slider interface powered by Mistral AI. Includes undo/redo functionality and smooth user interactions.
@@ -6,117 +5,188 @@ A web application that allows users to adjust the tone of their text using a sli
 ## ✨ Features
 
 - **Text Editor**: Input and edit text directly in the editor.
-- **Tone Slider**: Adjust text tone (formal ↔ casual) using a slider.
-- **Undo/Redo**: Seamlessly revert or reapply tone changes.
-- **Reset**: Reset the editor to default state.
+- **Tone Slider**: Adjust text tone (formal ↔ casual) using a slider (0-100).
+- **Undo/Redo**: Seamlessly revert or reapply text and tone changes.
+- **Reset**: Reset the editor and slider to the default state.
 - **Loading & Error Handling**: Visual indicators during API calls and clear error messages.
-- **Backend Proxy**: A lightweight backend that securely proxies requests to Mistral AI.
+- **Backend Proxy**: A lightweight Node.js backend that securely proxies requests to Mistral AI, handles caching, rate limiting, and input validation.
+- **Debounced API Calls**: Slider changes trigger API calls only after a brief pause to avoid excessive requests during sliding.
 
-## 🏗️ Project Structure
+## 🏗️ Technologies Used
 
-```
-/frontend
-  ├── src
-  ├── public
-  └── package.json
-
-/backend
-  ├── index.js
-  └── package.json
-```
-
-- **Frontend**: Built with React, Redux for state management.
-- **Backend**: Lightweight Node.js/Express server for API proxying and caching.
+- **Frontend**: React, Redux Toolkit, Tailwind CSS, custom CSS, Axios, lodash.debounce
+- **Backend**: Node.js, Express, @mistralai/mistralai, node-cache, express-rate-limit, cors, helmet, morgan, dotenv
 
 ## 🚀 Setup Instructions
 
 You need to run **frontend** and **backend** separately.
 
 ### 1️⃣ Backend
-
-```bash
 cd backend
 npm install
+# Create a .env file from .env.example and add your MISTRAL_API_KEY
 npm start
-```
+Backend will start at http://localhost:3001 (or the port specified in .env).
 
-Backend will start at `http://localhost:3001`.
-
-### 2️⃣ Frontend
-
-```bash
+### 1️⃣ Frontend
 cd frontend
 npm install
 npm start
-```
+Frontend will start at http://localhost:3000.
 
-Frontend will start at `http://localhost:3000`.
+📐 Technical Architecture & Approach
+Frontend
 
-## 📐 Technical Architecture
+    UI: React functional components.
 
-- **Frontend**:
-  - React for UI
-  - Redux Toolkit for state management (including undo/redo with history and future arrays)
-  - AsyncThunk for API calls
-  - Custom hooks for undo/redo interaction
-- **Backend**:
-  - Express server to securely call Mistral AI API
-  - Handles API key security and potential caching
+    State Management: Redux Toolkit with createSlice and createAsyncThunk.
 
-All API requests from the frontend are routed through the backend for security.
+    API Client: Axios wrapper for backend interaction.
 
-## 🔄 State Management (Undo/Redo)
+    Styling: Tailwind CSS and custom CSS for a Neumorphism-style design.
 
-The application uses a `current`, `history`, and `future` pattern:
+    Slider Logic:
 
-- On every successful text tone change:
-  - Current state is pushed to `history`.
-  - `current` is updated with the new text and slider value.
-  - `future` is cleared.
-- Undo:
-  - Moves the latest `history` state back to `current`.
-  - Pushes current to `future`.
-- Redo:
-  - Moves the latest `future` state to `current`.
-  - Pushes current to `history`.
+        Uses lodash.debounce (400ms) to delay API calls.
 
-This ensures smooth undo/redo across both **text** and **slider position**.
+        Separates visual feedback (localSlider) from actual tone-adjusting state (current.slider).
 
-## 🛠️ Error Handling
+    Error Handling:
 
-- **Frontend**:
-  - API errors are caught in `createAsyncThunk` and stored in Redux state.
-  - Error messages are displayed to users via the UI.
-- **Backend**:
-  - Catches and returns API errors from Mistral AI gracefully.
-- Handles:
-  - Network errors
-  - Invalid API responses
-  - Empty input validation (asks users to enter text before adjusting tone)
+        Friendly error messages from getFriendlyErrorMessage.
 
-## 🎨 Design & UX
+        Redux-managed error state, displayed via a reusable ErrorMessage component.
 
-- Clean split interface (editor on the left, slider + buttons on the right).
-- Smooth slider interaction.
-- Loading indicators during API calls.
-- Disabled buttons while loading.
-- Clear error and success states.
+        UI is disabled during API calls.
 
-## 📹 Deliverables
+Backend
 
-✅ **Video Demo**: [\[Insert link to video demo here\]](https://drive.google.com/file/d/166cyJ1iZKaDZ5-37udv7HmPEktq_JhAw/view?usp=sharing)
+    Framework: Express.js
 
-✅ **GitHub Repo**: [Insert GitHub repo link here]
+    Mistral AI Integration:
 
-✅ **This README**
+        Uses the official SDK.
 
-## 📝 Notes
+        Dynamic system prompts based on slider value and user input.
 
-- **Trade-offs**:
-  - Chose Redux Toolkit instead of more lightweight solutions for better undo/redo control.
-  - Used a simple Express backend without persistent caching for faster development.
-- **Potential improvements**:
-  - Add local storage persistence for undo/redo across sessions.
-  - Improve slider granularity or provide tone presets.
+    Security:
 
----
+        API key is stored in .env.
+
+        Uses middleware like helmet, cors, and rate-limit.
+
+    Caching: In-memory caching with node-cache (TTL: 1 hour).
+
+    Middleware:
+
+        Validates user input.
+
+        Handles errors globally and gracefully.
+
+🔄 Undo/Redo Implementation
+
+Implemented using Redux:
+
+    State Structure:
+
+        current: The active text and slider state.
+
+        history: An array of past states.
+
+        future: An array of redo-able future states.
+
+    Text Change:
+
+        Push current to history.
+
+        Update current.
+
+        Clear future.
+
+    Tone Adjustment:
+
+        Updates current upon API success.
+
+        future remains cleared.
+
+    Undo:
+
+        Pop from history to current.
+
+        Push old current to future.
+
+    Redo:
+
+        Pop from future to current.
+
+        Push old current to history.
+
+    Reset:
+
+        Push current state to history.
+
+        Clear future.
+
+        Set current to default.
+
+🛠️ Error Handling
+Frontend
+
+    Errors caught by createAsyncThunk and shown using ErrorMessage.
+
+    Validation before dispatching API requests.
+
+    UI is disabled during API calls to prevent conflicts.
+
+Backend
+
+    Input validation middleware returns 400 errors for invalid inputs.
+
+    Rate limiting middleware returns 429 on abuse.
+
+    Global error handler returns 500 for unhandled issues.
+
+    Mistral API interactions are checked for valid responses.
+
+🎨 Design & UX
+
+    Responsive layout: Side-by-side editor and slider on wide screens, stacked on mobile.
+
+    Smooth slider feedback via localSlider.
+
+    Neumorphism-inspired styling via custom CSS.
+
+    Clear loading indicators and disabled state for buttons.
+
+    Friendly error displays for API and validation issues.
+
+📹 Deliverables
+
+    ✅ Video Demo: [Insert link here]
+
+    ✅ GitHub Repo: [Insert link here]
+
+    ✅ This README
+
+📝 Notes
+Trade-offs
+
+    Redux Toolkit simplifies managing complex UI states like undo/redo, async calls, and multiple interactive elements.
+
+    In-memory cache is suitable for development but not ideal for production persistence.
+
+    useUndoRedo.js exists but is not used, as Redux handles this internally.
+
+Potential Improvements
+
+    Persist Redux state with redux-persist.
+
+    Expand tone presets beyond just a linear slider.
+
+    Remove unused hook files.
+
+    Increase Tailwind usage for more utility-first styling.
+
+    Add backend tests.
+
+    Use Redis for persistent caching in production.
